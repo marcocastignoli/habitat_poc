@@ -10,11 +10,15 @@ pragma solidity ^0.8.0;
 
 import { LibDiamond } from "./libraries/LibDiamond.sol";
 import { IDiamondCut } from "./interfaces/IDiamondCut.sol";
+import { FacetRepository } from "./storage/FacetRepository.sol";
 
 contract Diamond {    
 
-    constructor(address _contractOwner, address _diamondCutFacet) payable {        
+    constructor(address _contractOwner, address _diamondCutFacet, address _facetsRepository) payable {        
         LibDiamond.setContractOwner(_contractOwner);
+
+        FacetRepository.FacetRepositoryStorage storage frs = FacetRepository.facetRepositoryStorage();
+        frs.repo = _facetsRepository;
 
         // Add the diamondCut external function from the diamondCutFacet
         IDiamondCut.FacetCut[] memory cut = new IDiamondCut.FacetCut[](1);
@@ -25,7 +29,7 @@ contract Diamond {
             action: IDiamondCut.FacetCutAction.Add, 
             functionSelectors: functionSelectors
         });
-        LibDiamond.diamondCut(cut, address(0), "");        
+        LibDiamond.diamondCut(cut, address(0), "");    
     }
 
     // Find facet for function that is called and execute the

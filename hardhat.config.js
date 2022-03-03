@@ -25,7 +25,7 @@ require("./tasks/sourcify.js");
  */
 
 module.exports = {
-  solidity: "0.8.4",
+  solidity: "0.8.12",
   defaultNetwork: "localhost",
   networks: {
     ropsten: {

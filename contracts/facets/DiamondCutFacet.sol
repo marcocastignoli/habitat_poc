@@ -8,8 +8,13 @@ pragma solidity ^0.8.0;
 
 import { IDiamondCut } from "../interfaces/IDiamondCut.sol";
 import { LibDiamond } from "../libraries/LibDiamond.sol";
+import { FacetRepository } from "../storage/FacetRepository.sol";
 
 contract DiamondCutFacet is IDiamondCut {
+    function setRepo(address repo) external {
+        FacetRepository.FacetRepositoryStorage storage frs = FacetRepository.facetRepositoryStorage();
+        frs.repo = repo;
+    }
     /// @notice Add/replace/remove any number of functions and optionally execute
     ///         a function with delegatecall
     /// @param _diamondCut Contains the facet addresses and function selectors
@@ -26,6 +31,11 @@ contract DiamondCutFacet is IDiamondCut {
         uint256 originalSelectorCount = ds.selectorCount;
         uint256 selectorCount = originalSelectorCount;
         bytes32 selectorSlot;
+
+        for (uint256 facetIndex; facetIndex < _diamondCut.length; facetIndex++) {
+            require(FacetRepository.isInRepo(_diamondCut[facetIndex].facetAddress), "Facet not in repo :/");
+        }
+
         // Check if last selector slot is not full
         // "selectorCount & 7" is a gas efficient modulo by eight "selectorCount % 8" 
         if (selectorCount & 7 > 0) {

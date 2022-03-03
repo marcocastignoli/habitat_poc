@@ -1,0 +1,67 @@
+{
+  "functionSelectors": {
+    "diamondCut": "DiamondCutFacet",
+    "setRepo": "DiamondCutFacet",
+    "facetAddress": "DiamondLoupeFacet",
+    "facetAddresses": "DiamondLoupeFacet",
+    "facetFunctionSelectors": "DiamondLoupeFacet",
+    "facets": "DiamondLoupeFacet",
+    "supportsInterface": "DiamondLoupeFacet",
+    "owner": "OwnershipFacet",
+    "transferOwnership": "OwnershipFacet",
+    "getCounter": "LocalFacet",
+    "setCounter": "LocalFacetTest",
+    "allowance": "MyToken",
+    "approve": "MyToken",
+    "balanceOf": "MyToken",
+    "decimals": "MyToken",
+    "decreaseAllowance": "MyToken",
+    "increaseAllowance": "MyToken",
+    "init": "MyToken",
+    "name": "MyToken",
+    "symbol": "MyToken",
+    "totalSupply": "MyToken",
+    "transfer": "MyToken",
+    "transferFrom": "MyToken"
+
+  },
+  "contracts": {
+    "DiamondInit": {
+      "name": "DiamondInit",
+      "address": "0x958057fec883e3eaF185ED7f7614b02A1C9AB8Ac",
+      "type": "remote"
+    },
+    "DiamondCutFacet": {
+      "name": "DiamondCutFacet",
+      "address": "0xb2715578989C8aCe498996F3266Fe0591a7fb487",
+      "type": "remote"
+    },
+    "DiamondLoupeFacet": {
+      "name": "DiamondLoupeFacet",
+      "address": "0xBB6F096064d0FdCD063Ee06922c6a11f04eCE6A0",
+      "type": "remote"
+    },
+    "OwnershipFacet": {
+      "name": "OwnershipFacet",
+      "address": "0x39f15028361E6042a8EC48D61B8aF335DFE0058F",
+      "type": "remote"
+    },
+    "LocalFacet": {
+      "name": "LocalFacet",
+      "address": "0xF3e25E7811d645c17441b4525Ed694FF8a419907",
+      "type": "remote"
+    },
+    "LocalFacetTest": {
+      "name": "LocalFacetTest",
+      "address": "0xe62831B6deEeA2a2D1d39788D1961506728e1884",
+      "type": "remote"
+    },
+    "MyToken": {
+      "name": "MyToken",
+      "address": "0xB523DE060a19C0d50a6f90fe3B3ba35706CDd3F7",
+      "type": "remote"
+    }
+  },
+  "type": "remote",
+  "address": "0x79d9B05bd8B2B17A3314b44B834A9c9d676403Ef"
+}
