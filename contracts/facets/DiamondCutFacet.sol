@@ -32,9 +32,11 @@ contract DiamondCutFacet is IDiamondCut {
         uint256 selectorCount = originalSelectorCount;
         bytes32 selectorSlot;
 
-        for (uint256 facetIndex; facetIndex < _diamondCut.length; facetIndex++) {
-            require(FacetRepository.isInRepo(_diamondCut[facetIndex].facetAddress), "Facet not in repo :/");
-        }
+        // 0xhabitat 
+        // Uncomment these lines to activate the repo functionality
+        // for (uint256 facetIndex; facetIndex < _diamondCut.length; facetIndex++) {
+        //     require(FacetRepository.isInRepo(_diamondCut[facetIndex].facetAddress), "Facet not in repo :/");
+        // }
 
         // Check if last selector slot is not full
         // "selectorCount & 7" is a gas efficient modulo by eight "selectorCount % 8" 
