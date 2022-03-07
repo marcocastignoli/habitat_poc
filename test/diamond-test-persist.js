@@ -50,7 +50,7 @@ describe("Diamond test", async function () {
 
     const diamond = await updateDiamond()
 
-    await diamond.init();
+    await diamond.initMyToken();
 
     console.log(await diamond.totalSupply())
 
