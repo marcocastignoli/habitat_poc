@@ -65,7 +65,7 @@ task("diamond:deploy", "Deploy a new diamond")
 
     // deploy Diamond
     const Diamond = await ethers.getContractFactory('Diamond')
-    const diamond = await Diamond.deploy(contractOwner.address, diamondCutFacetAddress, '0xDB53DE813F118a16c15D1088720ad84158E02E34')
+    const diamond = await Diamond.deploy(contractOwner.address, diamondCutFacetAddress, '0x62E3133bd2BA458baBfE0b156ECf2475dF4CFa5E')
     await diamond.deployed()
 
     contractsToVerify.push({

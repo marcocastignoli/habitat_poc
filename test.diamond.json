@@ -17,23 +17,22 @@
     "decimals": "MyToken",
     "decreaseAllowance": "MyToken",
     "increaseAllowance": "MyToken",
-    "init": "MyToken",
+    "initMyToken": "MyToken",
     "name": "MyToken",
     "symbol": "MyToken",
     "totalSupply": "MyToken",
     "transfer": "MyToken",
     "transferFrom": "MyToken"
-
   },
   "contracts": {
     "DiamondInit": {
       "name": "DiamondInit",
-      "address": "0x958057fec883e3eaF185ED7f7614b02A1C9AB8Ac",
+      "address": "0x83E54fAd82b16a31D77a1926B46eb4ffe3ecfe20",
       "type": "remote"
     },
     "DiamondCutFacet": {
       "name": "DiamondCutFacet",
-      "address": "0xb2715578989C8aCe498996F3266Fe0591a7fb487",
+      "address": "0x93974E60B9Df2b7cEBaf276Bd9EcD1714ABd05D9",
       "type": "remote"
     },
     "DiamondLoupeFacet": {
@@ -48,7 +47,7 @@
     },
     "LocalFacet": {
       "name": "LocalFacet",
-      "address": "0xF3e25E7811d645c17441b4525Ed694FF8a419907",
+      "address": "0xCd80de9Df502215c8A75deE24B4b32Cfc527CAD7",
       "type": "remote"
     },
     "LocalFacetTest": {
@@ -58,10 +57,10 @@
     },
     "MyToken": {
       "name": "MyToken",
-      "address": "0xB523DE060a19C0d50a6f90fe3B3ba35706CDd3F7",
+      "address": "0xa8077d9F7226601995ACF818743567c9D69A4A85",
       "type": "remote"
     }
   },
   "type": "remote",
-  "address": "0x79d9B05bd8B2B17A3314b44B834A9c9d676403Ef"
+  "address": "0x7293d4b200Fe209C440247849282dDc3F177E75b"
 }
