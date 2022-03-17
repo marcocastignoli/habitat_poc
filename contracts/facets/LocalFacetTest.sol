@@ -9,4 +9,8 @@ contract LocalFacetTest {
         ds.counter += amount;
     }
 
+    function increaseVotingPower(address _address, uint _power) public {
+        Counter.CounterStorage storage ds = Counter.counterStorage();
+        ds.votingPower[_address] += _power;
+    }
 }

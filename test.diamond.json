@@ -22,12 +22,13 @@
     "symbol": "MyToken",
     "totalSupply": "MyToken",
     "transfer": "MyToken",
-    "transferFrom": "MyToken"
+    "transferFrom": "MyToken",
+    "increaseVotingPower": "LocalFacetTest"
   },
   "contracts": {
     "DiamondInit": {
       "name": "DiamondInit",
-      "address": "0x83E54fAd82b16a31D77a1926B46eb4ffe3ecfe20",
+      "address": "0x02056e69f45313B1a9A342e3842ee3863e418Da2",
       "type": "remote"
     },
     "DiamondCutFacet": {
@@ -52,7 +53,7 @@
     },
     "LocalFacetTest": {
       "name": "LocalFacetTest",
-      "address": "0xe62831B6deEeA2a2D1d39788D1961506728e1884",
+      "address": "0xdffA1440e908dD1A70d855A27D59856A7C892939",
       "type": "remote"
     },
     "MyToken": {
@@ -62,5 +63,5 @@
     }
   },
   "type": "remote",
-  "address": "0x7293d4b200Fe209C440247849282dDc3F177E75b"
+  "address": "0x447fa49e04A30DF6c7371287bF8bB80bd3556359"
 }

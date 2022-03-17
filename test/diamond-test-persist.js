@@ -39,6 +39,7 @@ async function updateDiamond() {
 describe("Diamond test", async function () {
   
   let diamond
+  let stakeContract
   it("sould deploy new diamond", async function () {
     const address = await hre.run('diamond:deploy', {
       o: TEST_FILE
@@ -46,25 +47,48 @@ describe("Diamond test", async function () {
     diamond = await updateDiamond()
   });
 
-  it("should increment facets Diamond", async function () {
-
+  it("should deploy stake contract", async function() {
     const diamond = await updateDiamond()
 
     await diamond.initMyToken();
 
     console.log(await diamond.totalSupply())
+    
+    const StakeContract = await ethers.getContractFactory("StakeContract");
+    stakeContract = await StakeContract.deploy(diamond.address, 1000, [
+      diamond.address
+    ], [
+      1000
+    ]);
 
-    let counterValue = await diamond.getCounter()
+    const accounts = await ethers.getSigners()
+    const contractOwner = accounts[0]
+
+    await diamond.approve(stakeContract.address, 10)
+
+    console.log(await diamond.balanceOf(contractOwner.address))
+
+    await stakeContract.stake(diamond.address, 10)
+
+    console.log(await diamond.balanceOf(contractOwner.address))
+  })
+
+
+  it("should increment facets Diamond", async function () {
+
+    
+
+    /* let counterValue = await diamond.getCounter()
     expect(counterValue).to.be.eq(0)
 
     const CounterLens = await ethers.getContractFactory("CounterLens");
 
     const counter = await CounterLens.deploy(diamond.address, diamond.address);
     
-    await counter.increment(2)
+    await counter.increment(2) 
     
     counterValue = await diamond.getCounter()
-    expect(counterValue).to.be.eq(2)
+    expect(counterValue).to.be.eq(2)*/
 
   })
 });
