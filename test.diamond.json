@@ -10,6 +10,7 @@
     "owner": "OwnershipFacet",
     "transferOwnership": "OwnershipFacet",
     "getCounter": "LocalFacet",
+    "increaseVotingPower": "LocalFacetTest",
     "setCounter": "LocalFacetTest",
     "allowance": "MyToken",
     "approve": "MyToken",
@@ -22,46 +23,45 @@
     "symbol": "MyToken",
     "totalSupply": "MyToken",
     "transfer": "MyToken",
-    "transferFrom": "MyToken",
-    "increaseVotingPower": "LocalFacetTest"
+    "transferFrom": "MyToken"
   },
   "contracts": {
     "DiamondInit": {
       "name": "DiamondInit",
-      "address": "0x02056e69f45313B1a9A342e3842ee3863e418Da2",
+      "address": "0x9C8c43AE64108527B871B04d9af08e390b370D51",
       "type": "remote"
     },
     "DiamondCutFacet": {
       "name": "DiamondCutFacet",
-      "address": "0x93974E60B9Df2b7cEBaf276Bd9EcD1714ABd05D9",
+      "address": "0xF9b42d6754F834798cb5230319d1cf18db0a7840",
       "type": "remote"
     },
     "DiamondLoupeFacet": {
       "name": "DiamondLoupeFacet",
-      "address": "0xBB6F096064d0FdCD063Ee06922c6a11f04eCE6A0",
+      "address": "0xd90637Ce8e07f9aab4AB50193c31F0dfFe0c926e",
       "type": "remote"
     },
     "OwnershipFacet": {
       "name": "OwnershipFacet",
-      "address": "0x39f15028361E6042a8EC48D61B8aF335DFE0058F",
+      "address": "0x9a569c04d6eDEEA690FFc0155D8D60Cf5936d15c",
       "type": "remote"
     },
     "LocalFacet": {
       "name": "LocalFacet",
-      "address": "0xCd80de9Df502215c8A75deE24B4b32Cfc527CAD7",
+      "address": "0x8C755b980736aA6a9F689Aa23804F2171FC06f13",
       "type": "remote"
     },
     "LocalFacetTest": {
       "name": "LocalFacetTest",
-      "address": "0xdffA1440e908dD1A70d855A27D59856A7C892939",
+      "address": "0xb09cb329A3f401480f07D471A6A8B7f8Eb918864",
       "type": "remote"
     },
     "MyToken": {
       "name": "MyToken",
-      "address": "0xa8077d9F7226601995ACF818743567c9D69A4A85",
+      "address": "0xE5a577d04E0946c290fa0B0D98B1C10BaD30A6Fb",
       "type": "remote"
     }
   },
   "type": "remote",
-  "address": "0x447fa49e04A30DF6c7371287bF8bB80bd3556359"
+  "address": "0x19222d6d608b5A9ae0b7c23447fB3135007D356e"
 }

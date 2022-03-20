@@ -10,7 +10,7 @@ const {
 
 const { promises: { rm } } = require('fs');
 const TEST_FILE = 'test.diamond.json'
-const CHAIN_ID = 31337
+const CHAIN_ID = 1337
 
 async function updateDiamond() {
   const diamondJson = await getDiamondJson(TEST_FILE)

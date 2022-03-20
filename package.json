@@ -10,6 +10,7 @@
     "hardhat": "^2.8.2"
   },
   "dependencies": {
+    "@nomiclabs/hardhat-ganache": "^2.0.1",
     "@solidstate/contracts": "^0.0.30",
     "axios": "^0.25.0",
     "dotenv": "^14.2.0",
