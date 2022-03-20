@@ -199,7 +199,6 @@ task("diamond:deploy", "Deploy a new diamond")
     await hre.run('diamond:cut', {
       o: args.o
     })
-
   })
 
 task("diamond:clone", "Do stuff with diamonds")

@@ -18,7 +18,7 @@ library FacetRepository {
         }
     }
 
-    function isInRepo(address facet) internal returns (bool) {
+    function isInRepo(address facet) internal view returns (bool) {
         FacetRepository.FacetRepositoryStorage storage frs = facetRepositoryStorage();
         if(frs.allowedFacets[facet]) {
             return true;
