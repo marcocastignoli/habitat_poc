@@ -87,6 +87,21 @@ let utils = {
     }
 
   },
+  async getABIsFromArtifacts() {
+    const buildInfo = 'artifacts/build-info'
+    const files = await promises.readdir(buildInfo)
+
+    const buffer = await promises.readFile(`${buildInfo}/${files[0]}`)
+    const string = await buffer.toString()
+    const json = JSON.parse(string)
+    const abis = {}
+    for (let path in json.output.contracts) {
+      for (let contract in json.output.contracts[path]) {
+        abis[contract] = json.output.contracts[path][contract].abi
+      }
+    }
+    return abis
+  },
   async generateLightFile() {
     const buildInfo = 'artifacts/build-info'
     const files = await promises.readdir(buildInfo)

@@ -9,8 +9,6 @@
     "supportsInterface": "DiamondLoupeFacet",
     "owner": "OwnershipFacet",
     "transferOwnership": "OwnershipFacet",
-    "getCounter": "LocalFacet",
-    "setCounter": "LocalFacetTest",
     "allowance": "MyToken",
     "approve": "MyToken",
     "balanceOf": "MyToken",
@@ -23,12 +21,40 @@
     "totalSupply": "MyToken",
     "transfer": "MyToken",
     "transferFrom": "MyToken",
-    "increaseVotingPower": "LocalFacetTest"
+    "decreaseVotingPower": "VotingPowerFacet",
+    "getMaxAmountOfVotingPower": "VotingPowerFacet",
+    "getTotalAmountOfVotingPower": "VotingPowerFacet",
+    "getVoterVotingPower": "VotingPowerFacet",
+    "getVotingPowerManager": "VotingPowerFacet",
+    "increaseVotingPower": "VotingPowerFacet",
+    "initVotingPower": "VotingPowerFacet",
+    "onERC1155BatchReceived": "TreasuryDefaultCallbackHandlerFacet",
+    "onERC1155Received": "TreasuryDefaultCallbackHandlerFacet",
+    "onERC721Received": "TreasuryDefaultCallbackHandlerFacet",
+    "tokensReceived": "TreasuryDefaultCallbackHandlerFacet",
+    "acceptOrRejectProposal": "TreasuryVotingFacet",
+    "acceptOrRejectSeveralProposals": "TreasuryVotingFacet",
+    "createSeveralTreasuryProposals": "TreasuryVotingFacet",
+    "createTreasuryProposal": "TreasuryVotingFacet",
+    "voteForOneTreasuryProposal": "TreasuryVotingFacet",
+    "voteForSeveralTreasuryProposals": "TreasuryVotingFacet",
+    "initTreasuryVoting": "TreasuryVotingFacet",
+    "getActiveProposalsIds": "TreasuryViewerFacet",
+    "getProposalsCount": "TreasuryViewerFacet",
+    "getTreasuryMaxDuration": "TreasuryViewerFacet",
+    "getTreasuryProposal": "TreasuryViewerFacet",
+    "getTreasuryProposalVotingDeadlineTimestamp": "TreasuryViewerFacet",
+    "getTreasuryProposalVotingVotesNo": "TreasuryViewerFacet",
+    "getTreasuryProposalVotingVotesYes": "TreasuryViewerFacet",
+    "getVotingType": "TreasuryViewerFacet",
+    "hasVotedInActiveProposals": "TreasuryViewerFacet",
+    "isHolderVotedForProposal": "TreasuryViewerFacet",
+    "isVotingForProposalStarted": "TreasuryViewerFacet"
   },
   "contracts": {
     "DiamondInit": {
       "name": "DiamondInit",
-      "address": "0x02056e69f45313B1a9A342e3842ee3863e418Da2",
+      "address": "0x8d4E4Ab032b2A2a68c53893B7DA838D9b22940c4",
       "type": "remote"
     },
     "DiamondCutFacet": {
@@ -46,22 +72,32 @@
       "address": "0x39f15028361E6042a8EC48D61B8aF335DFE0058F",
       "type": "remote"
     },
-    "LocalFacet": {
-      "name": "LocalFacet",
-      "address": "0xCd80de9Df502215c8A75deE24B4b32Cfc527CAD7",
-      "type": "remote"
-    },
-    "LocalFacetTest": {
-      "name": "LocalFacetTest",
-      "address": "0xdffA1440e908dD1A70d855A27D59856A7C892939",
-      "type": "remote"
-    },
     "MyToken": {
       "name": "MyToken",
       "address": "0xa8077d9F7226601995ACF818743567c9D69A4A85",
       "type": "remote"
+    },
+    "VotingPowerFacet": {
+      "name": "VotingPowerFacet",
+      "address": "0xB884fe615bB3358cF3f2cf1067f350852e5559FC",
+      "type": "remote"
+    },
+    "TreasuryDefaultCallbackHandlerFacet": {
+      "name": "TreasuryDefaultCallbackHandlerFacet",
+      "address": "0x6FBB357da573619a80592DE59dd252E58B6d8F52",
+      "type": "remote"
+    },
+    "TreasuryVotingFacet": {
+      "name": "TreasuryVotingFacet",
+      "address": "0x2C8C6827063520BF6D56F3b388FCCf89b09419ca",
+      "type": "remote"
+    },
+    "TreasuryViewerFacet": {
+      "name": "TreasuryViewerFacet",
+      "address": "0xa5cd3Abb21f46051caF27a4ba51642Cf23B62eAB",
+      "type": "remote"
     }
   },
   "type": "remote",
-  "address": "0x447fa49e04A30DF6c7371287bF8bB80bd3556359"
+  "address": "0xE73753243cc8d5c514369F36B669e384ed2a9554"
 }

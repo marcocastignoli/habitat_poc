@@ -15,7 +15,8 @@ const {
   setDiamondJson,
   getFunctionsNamesSelectorsFromFacet,
   getAddressFromArgs,
-  getChainIdByNetworkName
+  getChainIdByNetworkName,
+  getABIsFromArtifacts
 } = require('./lib/utils.js')
 
 require('dotenv').config();
@@ -245,6 +246,7 @@ task("diamond:add", "Adds or replace facets and functions to diamond.json")
   .addOptionalParam("o", "The diamond file to output to", "diamond.json")
   .addOptionalParam("address", "The address of the remote facet to add")
   .addOptionalParam("name", "The name of the local facet to add")
+  .addOptionalParam("links", "Libraries to link", "")
   .addFlag("skipFunctions", "Only add contract")
   .setAction(
   async (args, hre) => {
@@ -271,23 +273,27 @@ task("diamond:add", "Adds or replace facets and functions to diamond.json")
       await setDiamondJson(diamondJson, args.o)
       console.log(`[OK] Add facet ${name} to ${args.o}`)
     } else if (args.local) {
-      
+
       await hre.run("clean")
       await hre.run("compile")
 
-      const FacetName = args.name
-      const Facet = await ethers.getContractFactory(FacetName)
+      const ABIs = await getABIsFromArtifacts()
 
-      const signatures = Object.keys(Facet.interface.functions)
+      const FacetName = args.name
 
       const functionSelectors = {}
-      signatures.forEach(val => {
-        functionSelectors[val.substr(0, val.indexOf('('))] = FacetName
+      ABIs[FacetName].filter(el => el.type==='function').forEach(el => {
+        functionSelectors[el.name] = FacetName
       })
       
       diamondJson.contracts[FacetName] = {
         "name": FacetName,
         "type": "local"
+      }
+
+      const links = args.links.split(',').filter(link => link != "")
+      if (links.length>0) {
+        diamondJson.contracts[FacetName].links = links
       }
 
       diamondJson.functionSelectors = {...diamondJson.functionSelectors, ...functionSelectors}
@@ -329,7 +335,18 @@ async function deployAndVerifyFacetsFromDiff(facetsToDeployAndVerify, CHAIN_ID) 
   let contracts = []
   for (const contract of facetsToDeployAndVerify) {
     const FacetName = contract.name
-    const Facet = await ethers.getContractFactory(FacetName)
+    let Facet
+    if (contract.links) {
+      const libraries = {}
+      for (let link of contract.links) {
+        let Link = await ethers.getContractFactory(link)
+        const linkDeployed = await Link.deploy()
+        libraries[link] = linkDeployed.address
+      }
+      Facet = await ethers.getContractFactory(FacetName, { libraries })
+    } else {
+      Facet = await ethers.getContractFactory(FacetName)
+    }
     const facet = await Facet.deploy()
     await facet.deployed()
     contracts.push({

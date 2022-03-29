@@ -51,8 +51,6 @@ describe("Diamond test", async function () {
     const diamond = await updateDiamond()
 
     await diamond.initMyToken();
-
-    console.log(await diamond.totalSupply())
     
     const StakeContract = await ethers.getContractFactory("StakeContract");
     stakeContract = await StakeContract.deploy(diamond.address, 1000, [
@@ -63,14 +61,28 @@ describe("Diamond test", async function () {
 
     const accounts = await ethers.getSigners()
     const contractOwner = accounts[0]
+    const destination = accounts[1]
 
     await diamond.approve(stakeContract.address, 10)
 
-    console.log(await diamond.balanceOf(contractOwner.address))
+    await diamond.initVotingPower(stakeContract.address)
+
+    await diamond.initTreasuryVoting()
 
     await stakeContract.stake(diamond.address, 10)
 
-    console.log(await diamond.balanceOf(contractOwner.address))
+    expect(await diamond.getVoterVotingPower(contractOwner.address)).to.be.eq(10)
+
+    // TODO: I had to disable callData because it gives errors
+    await diamond.createTreasuryProposal(
+      destination.address,
+      1,
+      "0x",
+      99999999999999
+    )
+
+    let createdProposal = await diamond.getTreasuryProposal(1)
+    expect(destination.address).to.be.eq(createdProposal[1])
   })
 
 
