@@ -10,9 +10,12 @@
     "hardhat": "^2.8.2"
   },
   "dependencies": {
+    "@nomiclabs/hardhat-ganache": "^2.0.1",
+    "@openzeppelin/test-helpers": "^0.5.15",
     "@solidstate/contracts": "^0.0.30",
     "axios": "^0.25.0",
     "dotenv": "^14.2.0",
+    "ether-time-traveler": "^1.1.0",
     "form-data": "^4.0.0",
     "hardhat-ethers": "^1.0.1",
     "json-diff": "^0.7.1",
