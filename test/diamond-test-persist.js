@@ -62,8 +62,6 @@ describe("Diamond test", async function () {
     const diamond = await updateDiamond()
 
     await diamond.initMyToken();
-<<<<<<< Updated upstream
-=======
 
     const maxDuration = 10;
     const minimumQuorum = 0;
@@ -80,7 +78,6 @@ describe("Diamond test", async function () {
     );
 
     console.log(await diamond.totalSupply())
->>>>>>> Stashed changes
     
     const StakeContract = await ethers.getContractFactory("StakeContract");
     stakeContract = await StakeContract.deploy(diamond.address, 1000, [
@@ -89,13 +86,10 @@ describe("Diamond test", async function () {
       1000
     ]);
 
-<<<<<<< Updated upstream
     const accounts = await ethers.getSigners()
     const contractOwner = accounts[0]
     const destination = accounts[1]
-=======
     // TODO: distribute MyToken to user1, user2, user3 and stake
->>>>>>> Stashed changes
 
     await diamond.approve(stakeContract.address, 10)
 
@@ -172,23 +166,4 @@ describe("Diamond test", async function () {
     // get allowance for user1
     console.log(await diamond.balanceOf(user1.address));
 
-
-
-    // const LiquidityProvider = await ethers.getContractFactory("LiquidityProvider");
-    // liquidityProvider = await LiquidityProvider.deploy('0xBA12222222228d8Ba445958a75a0704d566BF2C8'); //ropsten
-    
-    // await liquidityProvider.initializePool(/* bytes32 poolId */)
-    /* let counterValue = await diamond.getCounter()
-    expect(counterValue).to.be.eq(0)
-
-    const CounterLens = await ethers.getContractFactory("CounterLens");
-
-    const counter = await CounterLens.deploy(diamond.address, diamond.address);
-    
-    await counter.increment(2) 
-    
-    counterValue = await diamond.getCounter()
-    expect(counterValue).to.be.eq(2)*/
-
-  })
 });
