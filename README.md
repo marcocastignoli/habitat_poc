@@ -10,6 +10,7 @@ Read the docs here https://docs.0xhabitat.org/Developers/Gemcutter
 ## Sourcify
 In order to work on this, we suggest you to read how Sourcify works, more info will be added here.
 
+---
 # Gemcutter: Quick Setup
 
 ## Install via terminal:
@@ -38,6 +39,7 @@ In order to work on this, we suggest you to read how Sourcify works, more info w
 
 *Now you are ready to execute the tasks*
 
+---
 # Diamond Tasks
 
 ## Gemcutter
