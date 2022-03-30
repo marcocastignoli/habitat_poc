@@ -3,7 +3,6 @@ require("@nomiclabs/hardhat-ethers");
 require("@nomiclabs/hardhat-ganache");
 require('dotenv').config();
 
-
 //tasks
 require("./tasks/diamond.js");
 require("./tasks/sourcify.js");
@@ -52,6 +51,6 @@ module.exports = {
     apiKey: process.env.ETHERSCAN_API_KEY,
   },
   mocha: {
-    timeout: 800000000
+    timeout: 8000000000
   }
 };
