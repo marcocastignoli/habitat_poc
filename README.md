@@ -46,6 +46,6 @@ In order to work on this, we suggest you to read how Sourcify works, more info w
 
 1. ```npx hardhat diamond:deploy --new --o test.diamond.json```
 2. ```npx hardhat diamond:add --local --name MyToken --o test.diamond.json```
-3. ```npx hardhat diamond:add --local --name LocalFacetTest --o test.diamond.json --links LibVotingPower```
+3. ```npx hardhat diamond:add --local --name LocalFacetTest --o test.diamond.json```
 4. ```npx hardhat diamond:add --local --name Treasury --o test.diamond.json```
 5. ```hh test```
