@@ -5,7 +5,7 @@ const { promises } = fs
 let utils = {
   getChainIdByNetworkName(networkName) {
     switch(networkName) {
-      case 'localhost': return 31337
+      case 'localhost': return 1337
       case 'rinkeby': return 4
       default: throw 'Add chainId in utils.js'
     }

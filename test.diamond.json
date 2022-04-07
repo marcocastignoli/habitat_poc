@@ -36,9 +36,9 @@
     "acceptOrRejectSeveralProposals": "TreasuryVotingFacet",
     "createSeveralTreasuryProposals": "TreasuryVotingFacet",
     "createTreasuryProposal": "TreasuryVotingFacet",
+    "initTreasuryVoting": "TreasuryVotingFacet",
     "voteForOneTreasuryProposal": "TreasuryVotingFacet",
     "voteForSeveralTreasuryProposals": "TreasuryVotingFacet",
-    "initTreasuryVoting": "TreasuryVotingFacet",
     "getActiveProposalsIds": "TreasuryViewerFacet",
     "getProposalsCount": "TreasuryViewerFacet",
     "getTreasuryMaxDuration": "TreasuryViewerFacet",
@@ -54,50 +54,50 @@
   "contracts": {
     "DiamondInit": {
       "name": "DiamondInit",
-      "address": "0x8d4E4Ab032b2A2a68c53893B7DA838D9b22940c4",
+      "address": "0x04814d9E38bE8f6b89A5c10E94Ed26ED4518c0cF",
       "type": "remote"
     },
     "DiamondCutFacet": {
       "name": "DiamondCutFacet",
-      "address": "0x93974E60B9Df2b7cEBaf276Bd9EcD1714ABd05D9",
+      "address": "0xA0A2CC29A3E2EBe65cB9edF07e920DDC784D754c",
       "type": "remote"
     },
     "DiamondLoupeFacet": {
       "name": "DiamondLoupeFacet",
-      "address": "0xBB6F096064d0FdCD063Ee06922c6a11f04eCE6A0",
+      "address": "0xA5C5cDedf036233E64902151D4721d0C97d2b7A3",
       "type": "remote"
     },
     "OwnershipFacet": {
       "name": "OwnershipFacet",
-      "address": "0x39f15028361E6042a8EC48D61B8aF335DFE0058F",
+      "address": "0x4c12c1EE51935C7F6917973CbCE8caCAdE926AeB",
       "type": "remote"
     },
     "MyToken": {
       "name": "MyToken",
-      "address": "0xa8077d9F7226601995ACF818743567c9D69A4A85",
+      "address": "0x91411589822b65902D1Dc676CF5212CE05782C8C",
       "type": "remote"
     },
     "VotingPowerFacet": {
       "name": "VotingPowerFacet",
-      "address": "0xB884fe615bB3358cF3f2cf1067f350852e5559FC",
+      "address": "0xd49BAAbD77066957E211dC3BC7d1b29B499d5D21",
       "type": "remote"
     },
     "TreasuryDefaultCallbackHandlerFacet": {
       "name": "TreasuryDefaultCallbackHandlerFacet",
-      "address": "0x6FBB357da573619a80592DE59dd252E58B6d8F52",
+      "address": "0x56dBAE899De366b17Abd8F8c474eD561C4f32cc5",
       "type": "remote"
     },
     "TreasuryVotingFacet": {
       "name": "TreasuryVotingFacet",
-      "address": "0x2C8C6827063520BF6D56F3b388FCCf89b09419ca",
+      "address": "0x892244f3c3756D019BE2bc7E975E043dC8E063B3",
       "type": "remote"
     },
     "TreasuryViewerFacet": {
       "name": "TreasuryViewerFacet",
-      "address": "0xa5cd3Abb21f46051caF27a4ba51642Cf23B62eAB",
+      "address": "0x89ac251869BeaFCbBBb4A550eBDf89C1315761E3",
       "type": "remote"
     }
   },
   "type": "remote",
-  "address": "0xE73753243cc8d5c514369F36B669e384ed2a9554"
+  "address": "0x47D12AF289545CC0668EDFb2da810a4b2E5b94c3"
 }

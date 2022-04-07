@@ -10,7 +10,9 @@ const {
 
 const { promises: { rm } } = require('fs');
 const TEST_FILE = 'test.diamond.json'
-const CHAIN_ID = 31337
+const CHAIN_ID = 1337
+
+const axios = require('axios').default;
 
 async function updateDiamond() {
   const diamondJson = await getDiamondJson(TEST_FILE)
@@ -36,7 +38,42 @@ async function updateDiamond() {
   return new ethers.Contract(diamondJson.address, abis, contractOwner)
 }
 
+async function testEnvironmentIsReady() {
+  let sourcifyIsReady = false
+  let ganacheIsReady = false
+
+  while(!sourcifyIsReady || !ganacheIsReady) {
+    if (!sourcifyIsReady) {
+      try {
+        console.log('Waiting for sourcify to be active...')
+        await axios.get('http://localhost:8990')
+      } catch(e) {
+        if (e.code != "ECONNREFUSED" && e.response.status === 404) {
+          sourcifyIsReady = true
+        }
+      }
+    }
+    if (!ganacheIsReady) {
+      try {
+        console.log('Waiting for ganache to be active...')
+        await axios.get('http://localhost:8545')
+      } catch(e) {
+        if (e.code != "ECONNREFUSED" && e.response.status === 404) {
+          ganacheIsReady = true
+        }
+      }
+    }
+    await new Promise(r => setTimeout(r, 1000));
+  }
+  return
+}
+
 describe("Diamond test", async function () {
+
+  before(async () => {
+    await testEnvironmentIsReady()
+  });
+
   
   let diamond
   let stakeContract

@@ -8,6 +8,8 @@ const {
   generateLightFile,
 } = require('../tasks/lib/utils.js')
 
+const CHAIN_ID = 1337
+
 async function main () {
   const accounts = await ethers.getSigners()
   const contractOwner = accounts[0]
@@ -25,7 +27,7 @@ async function main () {
   contracts.push({ 
     name: 'MyToken',
     address: myToken.address,
-    chainId: 31337
+    chainId: 1337
   })
 
   const HabitatRepository = await ethers.getContractFactory('HabitatRepository')
@@ -44,7 +46,7 @@ async function main () {
   contracts.push({ 
     name: 'HabitatRepository',
     address: habitatrepo.address,
-    chainId: 31337
+    chainId: 1337
   })
 
   const LocalFacet = await ethers.getContractFactory('LocalFacet')
@@ -53,7 +55,7 @@ async function main () {
   contracts.push({ 
     name: 'LocalFacet',
     address: localfacet.address,
-    chainId: 31337
+    chainId: 1337
   })
 
   const LocalFacetTest = await ethers.getContractFactory('LocalFacetTest')
@@ -62,7 +64,7 @@ async function main () {
   contracts.push({ 
     name: 'LocalFacetTest',
     address: localfacettest.address,
-    chainId: 31337
+    chainId: 1337
   })
 
 
@@ -73,12 +75,12 @@ async function main () {
   contracts.push({ 
     name: 'DiamondCutFacet',
     address: diamondCutFacet.address,
-    chainId: 31337
+    chainId: 1337
   })
   const sourcify = new SourcifyJS.default('http://localhost:8990', 'http://localhost:5500')
   let json = await generateLightFile()
   const buffer = Buffer.from(JSON.stringify(json))
-  const result = await sourcify.verify(31337, contracts, buffer)
+  const result = await sourcify.verify(1337, contracts, buffer)
   return
 
   await diamondCutFacet.deployed()
