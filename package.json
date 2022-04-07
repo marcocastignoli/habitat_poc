@@ -16,6 +16,8 @@
     "sourcify:run": "export REPOSITORY_URL=http://127.0.0.1:5500/ && export SERVER_PORT=8990 && export REPOSITORY_PATH=\"$(pwd)/data/repository\" && export DATABASE_PATH=\"$(pwd)/data/database\" && cd node_modules/ethereum-sourcify/ && node ./dist/server/server.js & npx http-server -s -p 5500 ./data/repository",
     "ganache:run": "ganache --fork.network \"ropsten\" --miner.blockGasLimit \"999999999999999\" --miner.defaultTransactionGasLimit \"99999999999999\" --miner.callGasLimit \"999999999999999\" --chain.networkId 1337",
     "dev:start": "yarn sourcify:run & yarn ganache:run",
+    "diamond:init": "bash DIAMONDFILE",
+    "diamond:init:test": "bash DIAMONDFILE test.diamond.json",
     "test": "npx hardhat test"
   },
   "dependencies": {

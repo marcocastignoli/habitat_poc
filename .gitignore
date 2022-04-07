@@ -18,3 +18,5 @@ typechain
 cache
 artifacts
 data/**/*
+
+*.diamond.json
