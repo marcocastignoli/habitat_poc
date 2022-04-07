@@ -9,9 +9,24 @@ Read the docs here https://docs.0xhabitat.org/Developers/Gemcutter
 
 ## Getting started
 
-1. When you work locally using gemcutter you always need to have the development environment online. You can start it using ```yarn dev:start```
-2. Then you have to initialize the .diamond.json file you can do it by running ```yarn diamond:init```. This command will read your DIAMONDFILE and generate a diamond.json file. If you want to run the test call instead ```yarn diamond:init:test```.
-3. Now that you have a test.diamond.json you can run the test, by launching ```yarn test```
+1. When you work locally using gemcutter you always need to have the development environment online. You can start it using
+    ```bash
+    yarn dev:start
+    ```
+2. Then you have to initialize the .diamond.json file you can do it by running 
+
+    ```
+    yarn diamond:init
+    ```
+    This command will read your DIAMONDFILE and generate a diamond.json file. If you want to run the test call instead
+    ```
+    yarn diamond:init:test
+    ```
+3. Now that you have a test.diamond.json you can run the test, by launching
+    ```
+    yarn test
+    ```
+
 
 ## DIAMONDFILE
 
