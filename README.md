@@ -9,6 +9,10 @@ Read the docs here https://docs.0xhabitat.org/Developers/Gemcutter
 
 ## Getting started
 
+0. Install the dependencies (it can take a while because of Sourcify)
+    ```bash
+    yarn
+    ```
 1. When you work locally using gemcutter you always need to have the development environment online. You can start it using
     ```bash
     yarn dev:start
