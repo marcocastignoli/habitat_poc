@@ -19,4 +19,4 @@ cache
 artifacts
 data/**/*
 
-*.diamond.json
+*diamond.json

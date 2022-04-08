@@ -33,14 +33,10 @@ Read the docs here https://docs.0xhabitat.org/Developers/Gemcutter
 When you are satisfied with the .diamond.json file you need to save your progress into the DIAMONDFILE. You can do it manually creating a file like this
 
 ```
-#!/bin/bash
-
-DIAMOND_FILE=${1:-diamond.json}
-
-npx hardhat diamond:deploy --new --o $DIAMOND_FILE;
-npx hardhat diamond:add --local --name MyToken --o $DIAMOND_FILE;
-npx hardhat diamond:add --local --name VotingPowerFacet --o $DIAMOND_FILE --links LibVotingPower;
-npx hardhat diamond:add --local --name TreasuryDefaultCallbackHandlerFacet --o $DIAMOND_FILE;
-npx hardhat diamond:add --local --name TreasuryVotingFacet --o $DIAMOND_FILE --links LibVotingPower;
-npx hardhat diamond:add --local --name TreasuryViewerFacet --o $DIAMOND_FILE;
+npx hardhat diamond:deploy --new
+npx hardhat diamond:add --local --name MyToken
+npx hardhat diamond:add --local --name VotingPowerFacet --links LibVotingPower
+npx hardhat diamond:add --local --name TreasuryDefaultCallbackHandlerFacet
+npx hardhat diamond:add --local --name TreasuryVotingFacet --links LibVotingPower
+npx hardhat diamond:add --local --name TreasuryViewerFacet
 ```
