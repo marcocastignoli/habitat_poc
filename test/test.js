@@ -1,72 +1,9 @@
 const { expect, assert } = require("chai");
 const { ethers } = require("hardhat");
-const { getSelectors, FacetCutAction, getSelector } = require('./libraries/diamond.js')
+const { updateDiamond, testEnvironmentIsReady } = require('./libraries/diamond.js')
 
-const SourcifyJS = require('sourcify-js');
-
-const {
-  getDiamondJson,
-} = require('../tasks/lib/utils.js')
-
-const { promises: { rm } } = require('fs');
 const TEST_FILE = 'test.diamond.json'
 const CHAIN_ID = 1337
-
-const axios = require('axios').default;
-
-async function updateDiamond() {
-  const diamondJson = await getDiamondJson(TEST_FILE)
-  const sourcify = new SourcifyJS.default('http://localhost:8990', 'http://localhost:5500')
-  const accounts = await ethers.getSigners()
-  const contractOwner = accounts[0]
-
-
-  let abis = []
-  for (let FacetName in diamondJson.contracts) {
-    const facet = diamondJson.contracts[FacetName]
-    const { abi } = await sourcify.getABI(facet.address, CHAIN_ID)
-
-    abis = abis.concat(abi.filter((abiElement, index, abi) => {
-      if (abiElement.type === "constructor") {
-        return false;
-      }
-
-      return true;
-    }))
-  }
-
-  return new ethers.Contract(diamondJson.address, abis, contractOwner)
-}
-
-async function testEnvironmentIsReady() {
-  let sourcifyIsReady = false
-  let ganacheIsReady = false
-
-  while(!sourcifyIsReady || !ganacheIsReady) {
-    if (!sourcifyIsReady) {
-      try {
-        console.log('Waiting for sourcify to be active...')
-        await axios.get('http://localhost:8990')
-      } catch(e) {
-        if (e.code != "ECONNREFUSED" && e.response.status === 404) {
-          sourcifyIsReady = true
-        }
-      }
-    }
-    if (!ganacheIsReady) {
-      try {
-        console.log('Waiting for ganache to be active...')
-        await axios.get('http://localhost:8545')
-      } catch(e) {
-        if (e.code != "ECONNREFUSED" && e.response.status === 404) {
-          ganacheIsReady = true
-        }
-      }
-    }
-    await new Promise(r => setTimeout(r, 1000));
-  }
-  return
-}
 
 describe("Diamond test", async function () {
 
@@ -81,11 +18,11 @@ describe("Diamond test", async function () {
     const address = await hre.run('diamond:deploy', {
       o: TEST_FILE
     })
-    diamond = await updateDiamond()
+    diamond = await updateDiamond(TEST_FILE, CHAIN_ID)
   });
 
   it("should deploy stake contract", async function() {
-    const diamond = await updateDiamond()
+    /* const diamond = await updateDiamond() */
 
     await diamond.initMyToken();
     
