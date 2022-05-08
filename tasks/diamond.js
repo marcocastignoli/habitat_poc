@@ -1,6 +1,5 @@
 // const { ethers } = require("hardhat");
 const axios = require('axios');
-const SourcifyJS = require('sourcify-js');
 const fs = require("fs");
 const { promises } = fs
 
@@ -8,7 +7,6 @@ const { getSelectors, FacetCutAction, getSelector } = require('../scripts/librar
 const DiamondDifferentiator = require('./lib/DiamondDifferentiator.js')
 const {
   loupe,
-  generateLightFile,
   verify,
   createDiamondFileFromSources,
   getDiamondJson,
@@ -16,7 +14,8 @@ const {
   getFunctionsNamesSelectorsFromFacet,
   getAddressFromArgs,
   getChainIdByNetworkName,
-  getABIsFromArtifacts
+  getABIsFromArtifacts,
+  getMetadataFromAddress
 } = require('./lib/utils.js')
 
 require('dotenv').config();
@@ -127,10 +126,7 @@ task("diamond:deploy", "Deploy a new diamond")
       ownershipFacetAddress = diamondJson.contracts.OwnershipFacet.address
     }
 
-
-    let json = await generateLightFile()
-  
-    const res = await verify(CHAIN_ID, contractsToVerify, json)
+    const res = await verify(contractsToVerify)
     
     console.log('[OK] Diamond verified')
 
@@ -256,8 +252,10 @@ task("diamond:add", "Adds or replace facets and functions to diamond.json")
     }
     const diamondJson = await getDiamondJson(args.o)
     if (args.remote) {
-      const sourcify = new SourcifyJS.default('http://localhost:8990', 'http://localhost:5500')
-      let {abi, name} = await sourcify.getABI(args.address, CHAIN_ID)
+
+      const {abi, name} = await getMetadataFromAddress(args.address)
+
+      // return
       diamondJson.contracts[name] = {
         name,
         address: args.address,
@@ -357,10 +355,8 @@ async function deployAndVerifyFacetsFromDiff(facetsToDeployAndVerify, CHAIN_ID) 
   }
 
   console.log('Starting verification process on Sourcify...')
-  /**@notice verify contracts */
-  let json = await generateLightFile()
   
-  const res = await verify(CHAIN_ID, contracts, json)
+  const res = await verify(contracts)
   console.log('[OK] Deployed facets verified')
   return contracts
 }
@@ -403,15 +399,13 @@ task("diamond:cut", "Compare the local diamond.json with the remote diamond")
     // TOODO: let diamondJsonFunctionSelectors = {...diamondJson.functionSelectors}
 
     for (let f of facetsToAdd) {
-      const sourcify = new SourcifyJS.default('http://localhost:8990', 'http://localhost:5500')
-  
       let facetAddress
       if (diamondJson.contracts[f.facet].type === 'remote') {
         facetAddress = diamondJson.contracts[f.facet].address
       } else {
         facetAddress = verifiedFacets.find(vf => vf.name === f.facet).address
       }
-      const {abi} = await sourcify.getABI(facetAddress, CHAIN_ID)
+      const {abi} = await getMetadataFromAddress(facetAddress)
       const facet = new ethers.Contract(facetAddress, abi)
   
       let fnNamesSelectors = await getFunctionsNamesSelectorsFromFacet(facet)
@@ -429,16 +423,14 @@ task("diamond:cut", "Compare the local diamond.json with the remote diamond")
     }
 
     const facetsToReplace = differentiator.getFunctionFacetsToReplace()
-    for (let f of facetsToReplace) {
-      const sourcify = new SourcifyJS.default('http://localhost:8990', 'http://localhost:5500')
-  
+    for (let f of facetsToReplace) {  
       let facetAddress
       if (diamondJson.contracts[f.facet].type === 'remote') {
         facetAddress = diamondJson.contracts[f.facet].address
       } else {
         facetAddress = verifiedFacets.find(vf => vf.name === f.facet).address
       }
-      const {abi} = await sourcify.getABI(facetAddress, CHAIN_ID)
+      const {abi} = await getMetadataFromAddress(facetAddress)
       const facet = new ethers.Contract(facetAddress, abi)
   
       let fnNamesSelectors = await getFunctionsNamesSelectorsFromFacet(facet)
@@ -457,15 +449,13 @@ task("diamond:cut", "Compare the local diamond.json with the remote diamond")
     
     const facetsToRemove = differentiator.getFunctionsFacetsToRemove()
     for (let f of facetsToRemove) {
-      const sourcify = new SourcifyJS.default('http://localhost:8990', 'http://localhost:5500')
-  
       let facetAddress
       if (diamondJson.contracts[f.facet].type === 'remote') {
         facetAddress = diamondJson.contracts[f.facet].address
       } else {
         facetAddress = verifiedFacets.find(vf => vf.name === f.facet).address
       }
-      const {abi} = await sourcify.getABI(facetAddress, CHAIN_ID)
+      const {abi} = await getMetadataFromAddress(facetAddress)
       const facet = new ethers.Contract(facetAddress, abi)
   
       let fnNamesSelectors = await getFunctionsNamesSelectorsFromFacet(facet)

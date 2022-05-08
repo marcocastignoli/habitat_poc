@@ -5,14 +5,12 @@
     "@nomiclabs/hardhat-etherscan": "^3.0.0",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
     "chai": "^4.3.4",
-    "ethereum-sourcify": "https://github.com/0xHabitat/sourcify",
     "ethereum-waffle": "^3.4.0",
     "ethers": "^5.5.3",
     "ganache": "^7.0.3",
     "hardhat": "^2.8.2"
   },
   "scripts": {
-    "postinstall": "node package_scripts/postinstall.js",
     "dev:start": "node package_scripts/devstart.js",
     "diamond:init": "node package_scripts/diamondfile.js",
     "diamond:init:test": "node package_scripts/diamondfile.js test.diamond.json",
@@ -21,12 +19,15 @@
   "dependencies": {
     "@solidstate/contracts": "^0.0.30",
     "axios": "^0.26.1",
+    "bs58": "^5.0.0",
+    "cbor-x": "^1.2.1",
     "dotenv": "^14.2.0",
     "form-data": "^4.0.0",
     "hardhat-ethers": "^1.0.1",
+    "ipfs": "^0.62.3",
+    "ipfs-http-client": "^56.0.3",
     "json-diff": "^0.7.1",
     "murmur-128": "^1.0.0",
-    "request": "^2.88.2",
-    "sourcify-js": "^1.6.3"
+    "request": "^2.88.2"
   }
 }

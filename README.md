@@ -9,7 +9,7 @@ Read the docs here https://docs.0xhabitat.org/Developers/Gemcutter
 
 ## Getting started
 
-0. Install the dependencies (it can take a while because of Sourcify)
+0. Install the dependencies
     ```bash
     yarn
     ```

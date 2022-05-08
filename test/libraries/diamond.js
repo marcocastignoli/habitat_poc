@@ -3,6 +3,7 @@ const axios = require('axios').default;
 
 const {
   getDiamondJson,
+  getMetadataFromAddress,
 } = require('../../tasks/lib/utils.js')
 
 const SourcifyJS = require('sourcify-js');
@@ -83,7 +84,6 @@ function findAddressPositionInFacets (facetAddress, facets) {
 
 async function updateDiamond(TEST_FILE, CHAIN_ID) {
   const diamondJson = await getDiamondJson(TEST_FILE)
-  const sourcify = new SourcifyJS.default('http://localhost:8990', 'http://localhost:5500')
   const accounts = await ethers.getSigners()
   const contractOwner = accounts[0]
 
@@ -91,7 +91,7 @@ async function updateDiamond(TEST_FILE, CHAIN_ID) {
   let abis = []
   for (let FacetName in diamondJson.contracts) {
     const facet = diamondJson.contracts[FacetName]
-    const { abi } = await sourcify.getABI(facet.address, CHAIN_ID)
+    const {abi} = await getMetadataFromAddress(facet.address)
 
     abis = abis.concat(abi.filter((abiElement, index, abi) => {
       if (abiElement.type === "constructor") {
@@ -106,20 +106,9 @@ async function updateDiamond(TEST_FILE, CHAIN_ID) {
 }
 
 async function testEnvironmentIsReady() {
-  let sourcifyIsReady = false
   let ganacheIsReady = false
 
-  while(!sourcifyIsReady || !ganacheIsReady) {
-    if (!sourcifyIsReady) {
-      try {
-        console.log('Waiting for sourcify to be active...')
-        await axios.get('http://localhost:8990')
-      } catch(e) {
-        if (e.code != "ECONNREFUSED" && e.response.status === 404) {
-          sourcifyIsReady = true
-        }
-      }
-    }
+  while(!ganacheIsReady) {
     if (!ganacheIsReady) {
       try {
         console.log('Waiting for ganache to be active...')

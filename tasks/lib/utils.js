@@ -1,6 +1,9 @@
-const SourcifyJS = require('sourcify-js');
 const fs = require("fs");
 const { promises } = fs
+const {decode} = require('cbor-x')
+const cborDecode = decode
+const bs58 = require('bs58')
+const IPFS = require('ipfs-http-client')
 
 let utils = {
   getChainIdByNetworkName(networkName) {
@@ -46,11 +49,7 @@ let utils = {
     for await (const facet of facets) {
       const address = facet[0]
       
-      
-
-      const sourcify = new SourcifyJS.default('http://localhost:8990', 'http://localhost:5500')
-
-      const { abi, name } = await sourcify.getABI(address, CHAIN_ID)
+      const {abi, name} = await utils.getMetadataFromAddress(address)
 
       const facetObj = new ethers.Contract(address, abi)
       let fnNamesSelectors = await utils.getFunctionsNamesSelectorsFromFacet(facetObj)
@@ -102,30 +101,27 @@ let utils = {
     }
     return abis
   },
-  async generateLightFile() {
+  async verify(contracts) {
+    const node = await IPFS.create()
     const buildInfo = 'artifacts/build-info'
     const files = await promises.readdir(buildInfo)
 
-    const buffer = await promises.readFile(`${buildInfo}/${files[0]}`)
-    const string = await buffer.toString()
-    const json = JSON.parse(string)
-    delete json.output.sources
-    for (let path in json.output.contracts) {
-      for (let contract in json.output.contracts[path]) {
-        delete json.output.contracts[path][contract].abi
-        delete json.output.contracts[path][contract].evm
+    const buildInfoBuffer = await promises.readFile(`${buildInfo}/${files[0]}`)
+    const string = await buildInfoBuffer.toString()
+    const buildInfoJson = JSON.parse(string)
+
+    for (contract of contracts) {
+      
+      for (contractsInFile of Object.values(buildInfoJson.output.contracts)) {
+        let isRight = Object.keys(contractsInFile).includes(contract.name)
+        if (isRight) {
+          let buildInfoContract = contractsInFile[contract.name]
+          const results = await node.add(buildInfoContract.metadata)
+        }
       }
     }
-    return json
-  },
 
-  async verify(chaindId, contracts, json) {
-    // let json = await this.generateLightFile()
-    const buffer = Buffer.from(JSON.stringify(json))
-    const sourcify = new SourcifyJS.default('http://localhost:8990', 'http://localhost:5500')
-    const result = await sourcify.verify(chaindId, contracts, buffer)
-
-    return result;
+    return true;
   },
 
   createDiamondFileFromSources() {
@@ -179,6 +175,36 @@ let utils = {
       return acc
     }, [])
     return names
+  },
+  async getMetadataFromAddress(address) {
+    const url = "http://localhost:8545";
+    const provider = new ethers.providers.JsonRpcProvider(url);
+
+    const fromHexString = hexString => new Uint8Array(hexString.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
+
+    const bytecode = await provider.getCode(address);
+    const ipfsHashLength =  parseInt(`${bytecode.substr(bytecode.length - 4)}`, 16);
+    const cborEncoded = bytecode.substring(bytecode.length - 4 - ipfsHashLength*2, bytecode.length - 4)
+    const contractMetadata = cborDecode(fromHexString(cborEncoded))
+    const toHexString = bytes => bytes.reduce((str, byte) => str + byte.toString(16).padStart(2, '0'), '');
+    
+    const node = await IPFS.create()
+    
+    const stream = node.cat(bs58.encode(contractMetadata.ipfs))
+
+    let data = ''
+
+    for await (const chunk of stream) {
+      // chunks of data are returned as a Buffer, convert it back to a string
+      data += chunk.toString()
+    }
+
+    const contractMetadataJSON = JSON.parse(data)
+    const name = Object.values(contractMetadataJSON.settings.compilationTarget)[0]
+
+    const abi = contractMetadataJSON.output.abi
+
+    return {name,abi}
   }
 }
 
