@@ -33,14 +33,14 @@ module.exports = class DiamondDifferentiator {
       return fn.endsWith('__deleted')
     })
 
-    let functionsFacetsToAdd = functionsToAdd.map(fn => {
+    let functionsFacetsToRemove = functionsToAdd.map(fn => {
       return {
         fn: `${fn.substring(0, fn.length - '__deleted'.length)}`,
         facet: this.d[_FUNCTIONS_SELECTOR][fn]
       }
     })
 
-    return functionsFacetsToAdd
+    return functionsFacetsToRemove
   }
 
   getFunctionFacetsToReplace() {

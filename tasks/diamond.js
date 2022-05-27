@@ -15,7 +15,8 @@ const {
   getAddressFromArgs,
   getChainIdByNetworkName,
   getABIsFromArtifacts,
-  getMetadataFromAddress
+  getMetadataFromAddress,
+  getFunctionSelectorFromAbi
 } = require('./lib/utils.js')
 
 require('dotenv').config();
@@ -264,7 +265,7 @@ task("diamond:add", "Adds or replace facets and functions to diamond.json")
       if (!args.skipFunctions) {
         for(let obj of abi) {
           if (obj.type === 'function') {
-            diamondJson.functionSelectors[obj.name] = name
+            diamondJson.functionSelectors[getFunctionSelectorFromAbi(obj)] = name
           }
         }
       }
@@ -281,7 +282,7 @@ task("diamond:add", "Adds or replace facets and functions to diamond.json")
 
       const functionSelectors = {}
       ABIs[FacetName].filter(el => el.type==='function').forEach(el => {
-        functionSelectors[el.name] = FacetName
+        functionSelectors[getFunctionSelectorFromAbi(el)] = FacetName
       })
       
       diamondJson.contracts[FacetName] = {

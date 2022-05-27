@@ -59,9 +59,9 @@ let utils = {
       for (const obj of abi) {
         try {
           if (obj.type === 'function') {
-            const selector = fnNamesSelectors.find(ns => ns.name == obj.name).selector
+            const selector = fnNamesSelectors.find(ns => ns.name == utils.getFunctionSelectorFromAbi(obj)).selector
             if (cuttedFacets.includes(selector)) {
-              functions.push(obj.name)
+              functions.push(utils.getFunctionSelectorFromAbi(obj))
             }
           }
         } catch(e) {}
@@ -168,7 +168,7 @@ let utils = {
     const names = signatures.reduce((acc, val) => {
       if (val !== 'init(bytes)') {
         acc.push({
-          name: val.substr(0, val.indexOf('(')),
+          name: val,
           selector: contract.interface.getSighash(val)
         })
       }
@@ -205,6 +205,20 @@ let utils = {
     const abi = contractMetadataJSON.output.abi
 
     return {name,abi}
+  },
+  handleComponents(input) {
+    if (input.type === 'tuple') {
+      return `(${input.components.map(c => utils.handleComponents(c)).join(',')})`
+    } else if (input.type === 'tuple[]') {
+      return `(${input.components.map(c => utils.handleComponents(c)).join(',')})[]`
+    } else {
+      return input.type
+    }
+  },
+  getFunctionSelectorFromAbi(abi) {
+    let arguments = ''
+    let types = abi.inputs.map(i => utils.handleComponents(i))
+    return `${abi.name}(${types.join(',')})`
   }
 }
 
