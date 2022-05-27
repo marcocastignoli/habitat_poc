@@ -116,7 +116,7 @@ let utils = {
         let isRight = Object.keys(contractsInFile).includes(contract.name)
         if (isRight) {
           let buildInfoContract = contractsInFile[contract.name]
-          const results = await node.add(buildInfoContract.metadata)
+          const results = await node.add(new Buffer(buildInfoContract.metadata))
         }
       }
     }

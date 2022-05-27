@@ -27,27 +27,12 @@ module.exports = {
   solidity: "0.8.12",
   defaultNetwork: "localhost",
   networks: {
-    ropsten: {
-      url: `${process.env.ALCHEMY_ROPSTEN_URL}`,
-      accounts: [`0x${process.env.PRIVATE_KEY}`],
-    },
-    rinkeby: {
-      url: `${process.env.ALCHEMY_RINKEBY_URL}`,
-      accounts: [`0x${process.env.PRIVATE_KEY}`],
-    },
-    mainnet: {
-      url: `${process.env.ALCHEMY_MAINNET_URL}`,
-      accounts: [`0x${process.env.PRIVATE_KEY}`],
-    },
     localhost: {
       url: "http://localhost:8545",
       /*      
         uses account 0 of the hardhat node to deploy
       */
     },
-  },
-  etherscan: {
-    apiKey: process.env.ETHERSCAN_API_KEY,
   },
   mocha: {
     timeout: 80000
