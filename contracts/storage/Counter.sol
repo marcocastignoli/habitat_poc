@@ -7,6 +7,7 @@ library Counter {
     struct CounterStorage {
         uint256 counter;
         mapping(address => uint) votingPower;
+        bool initialized;
     }
 
     function counterStorage() internal pure returns (CounterStorage storage ds) {

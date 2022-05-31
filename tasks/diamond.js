@@ -1,7 +1,10 @@
 // const { ethers } = require("hardhat");
 const axios = require('axios');
+const { info } = require('console');
 const fs = require("fs");
 const { promises } = fs
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
 
 const { getSelectors, FacetCutAction, getSelector } = require('../scripts/libraries/diamond.js')
 const DiamondDifferentiator = require('./lib/DiamondDifferentiator.js')
@@ -18,6 +21,24 @@ const {
   getMetadataFromAddress,
   getFunctionSelectorFromAbi
 } = require('./lib/utils.js')
+
+async function runCommands(commands, file) {
+  for (let i = 0; i<commands.length; i++) {
+      let command = `${commands[i]} --o ${file}`
+      try {
+          console.log(command)
+          const {stdout} = await exec(command)
+          console.log(stdout)
+      } catch(e) {
+          if (e.toString().includes('HH108')) {
+              console.error('You need to run the development environment first, try running: yarn dev:start in another terminal before running this command.')
+              process.exit(1)
+          } else {
+              console.log(e.toString())
+          }
+      }
+  }
+}
 
 require('dotenv').config();
 
@@ -366,6 +387,9 @@ async function deployAndVerifyFacetsFromDiff(facetsToDeployAndVerify, CHAIN_ID) 
 task("diamond:cut", "Compare the local diamond.json with the remote diamond")
   .addOptionalParam("address", "The diamond's address", "")
   .addOptionalParam("o", "The file to create", "diamond.json")
+  .addOptionalParam("initFacet", "Facet to init", "")
+  .addOptionalParam("initFn", "Function to call during init", "")
+  .addOptionalParam("initParams", "Parameters to pass during init", "")
   .setAction(async (args, hre) => {
     const CHAIN_ID = getChainIdByNetworkName(hre.config.defaultNetwork)
     let address = await getAddressFromArgs(args)
@@ -478,20 +502,35 @@ task("diamond:cut", "Compare the local diamond.json with the remote diamond")
 
     /**@notice cut in facets */
     console.log(`Cutting Diamond's facets...`)
-    // TODO: get diamondInitAddress from somewhere else
-    let diamondInitAddress = diamondJson.contracts.DiamondInit.address
-    //get diamondInit interface
-    let diamondInit = await hre.ethers.getContractFactory('DiamondInit')
-
     // do the cut
-    //console.log('Diamond Cut:', cut)
     const diamondCut = await ethers.getContractAt('IDiamondCut', address)
     let tx
     let receipt
-    // call to init function
-    let functionCall = diamondInit.interface.encodeFunctionData('init')
     
-    tx = await diamondCut.diamondCut(cut, diamondInitAddress, functionCall, {gasLimit: 10000000})
+    // call to init function
+    let initAddress = "0x0000000000000000000000000000000000000000"
+    let functionCall = []
+
+    if (args.initFacet !== "" && args.initFn !== "") {
+      initAddress = address
+      let facetAddress
+      if (diamondJson.contracts[args.initFacet].type === 'remote') {
+        facetAddress = diamondJson.contracts[args.initFacet].address
+      } else {
+        facetAddress = verifiedFacets.find(vf => vf.name === args.initFacet).address
+      }
+
+      const {abi} = await getMetadataFromAddress(facetAddress)
+
+      let iface = new ethers.utils.Interface(abi)
+      let params = []
+      if (args.initParams.length >= 0) {
+        params = args.initParams.split(',')
+      }
+      functionCall = iface.encodeFunctionData(args.initFn, params)
+    }
+    
+    tx = await diamondCut.diamondCut(cut, initAddress, functionCall, {gasLimit: 10000000})
 
     receipt = await tx.wait()
     if (!receipt.status) {
@@ -506,6 +545,15 @@ task("diamond:cut", "Compare the local diamond.json with the remote diamond")
 
     // and input facet's address and type into diamond.json
   });
+
+task("diamond:init", "Init the diamond.json from the DIAMONDFILE")
+  .addOptionalParam("o", "The file to create", "diamond.json")
+  .setAction(async (args, hre) => {
+    const diamondFile = fs.readFileSync('DIAMONDFILE')
+    const commands = diamondFile.toString().split('\n')
+
+    await runCommands(commands, args.o)
+  })
 
 module.exports = {};
 

@@ -12,8 +12,6 @@
   },
   "scripts": {
     "dev:start": "ganache -d  --db ./data/ganache --miner.blockGasLimit 0x1fffffffffffff --miner.defaultTransactionGasLimit 999999999999999 --miner.callGasLimit 999999999999999 --chain.networkId 1337",
-    "diamond:init": "node package_scripts/diamondfile.js",
-    "diamond:init:test": "node package_scripts/diamondfile.js test.diamond.json",
     "test": "npx hardhat test"
   },
   "dependencies": {

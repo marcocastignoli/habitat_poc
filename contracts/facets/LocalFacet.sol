@@ -18,4 +18,11 @@ contract LocalFacet {
         Counter.CounterStorage storage ds = Counter.counterStorage();
         return ds.counter + rings;
     }
+
+    function initCounter(uint asd, address addr, bool cic) external {
+        Counter.CounterStorage storage ds = Counter.counterStorage();
+        require(!ds.initialized, 'Already initialized');
+        ds.initialized = cic;
+        ds.counter = 0;
+    }
 }

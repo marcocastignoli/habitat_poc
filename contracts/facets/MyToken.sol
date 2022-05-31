@@ -9,7 +9,7 @@ import { MyTokenInit } from "../storage/MyTokenInit.sol";
 contract MyToken is ERC20 {
     using ERC20MetadataStorage for ERC20MetadataStorage.Layout;
 
-    function initMyToken() public {
+    function initMyToken(string calldata name, string calldata symbol, uint8 decimals, address luckyGuy) public {
         ERC20MetadataStorage.Layout storage l = ERC20MetadataStorage.layout();
 
         MyTokenInit.MyTokenInitStorage storage mti = MyTokenInit.initStorage();
@@ -17,10 +17,10 @@ contract MyToken is ERC20 {
         require(!mti.isInitialized, 'Contract is already initialized!');
         mti.isInitialized = true;
 
-        l.setName("MTK");
-        l.setSymbol("MTK");
-        l.setDecimals(8);
+        l.setName(name);
+        l.setSymbol(symbol);
+        l.setDecimals(decimals);
 
-        _mint(msg.sender, 1000);
+        _mint(luckyGuy, 1000);
     }
 }

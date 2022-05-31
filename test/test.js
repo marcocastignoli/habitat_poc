@@ -15,8 +15,8 @@ describe("Diamond test", async function () {
   let diamond
   let stakeContract
   it("sould deploy new diamond", async function () {
-    const address = await hre.run('diamond:deploy', {
-      o: TEST_FILE
+    await hre.run('diamond:init', {
+      o: TEST_FILE,
     })
     diamond = await updateDiamond(TEST_FILE, CHAIN_ID)
   });
@@ -24,18 +24,16 @@ describe("Diamond test", async function () {
   it("should deploy stake contract", async function() {
     /* const diamond = await updateDiamond() */
 
-    await diamond.initMyToken();
-    
+    const accounts = await ethers.getSigners()
+    const contractOwner = accounts[0]
+    const destination = accounts[1]
+
     const StakeContract = await ethers.getContractFactory("StakeContract");
     stakeContract = await StakeContract.deploy(diamond.address, 1000, [
       diamond.address
     ], [
       1000
     ]);
-
-    const accounts = await ethers.getSigners()
-    const contractOwner = accounts[0]
-    const destination = accounts[1]
 
     await diamond.approve(stakeContract.address, 10)
 
@@ -60,11 +58,11 @@ describe("Diamond test", async function () {
   })
 
 
-  it("should increment facets Diamond", async function () {
+  /* it("should increment facets Diamond", async function () {
 
     
 
-    /* let counterValue = await diamond.getCounter()
+    let counterValue = await diamond.getCounter()
     expect(counterValue).to.be.eq(0)
 
     const CounterLens = await ethers.getContractFactory("CounterLens");
@@ -74,7 +72,7 @@ describe("Diamond test", async function () {
     await counter.increment(2) 
     
     counterValue = await diamond.getCounter()
-    expect(counterValue).to.be.eq(2)*/
+    expect(counterValue).to.be.eq(2)
 
-  })
+  })*/
 });
