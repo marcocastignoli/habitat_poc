@@ -18,5 +18,6 @@ typechain
 cache
 artifacts
 data/**/*
+!/data/ganache
 
 *diamond.json
