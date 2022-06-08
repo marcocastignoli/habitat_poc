@@ -17,6 +17,7 @@ typechain
 #Hardhat files
 cache
 artifacts
+data/!ganache/
 data/**/*
 
 *diamond.json
