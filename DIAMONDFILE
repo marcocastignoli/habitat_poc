@@ -1,4 +1,4 @@
-npx hardhat diamond:deploy --new
+npx hardhat diamond:deploy
 npx hardhat diamond:add --local --name MyToken
 npx hardhat diamond:cut --init-facet MyToken --init-fn initMyToken --init-params "Habitat,HBT,8,0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"
 npx hardhat diamond:add --local --name VotingPowerFacet --links LibVotingPower

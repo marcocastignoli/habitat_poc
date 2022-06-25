@@ -44,9 +44,6 @@ require('dotenv').config();
 
 task("diamond:deploy", "Deploy a new diamond")
   .addOptionalParam("o", "The diamond file to deploy", "diamond.json")
-  .addFlag("new", "Deploy a new Diamond")
-  .addFlag("excludeLoupe", "Exclude loupe facet from default address as remote facet")
-  .addFlag("excludeOwnership", "Exclude cut facet from default address as remote facet")
   .addOptionalParam("diamondCutFacet", "The standard address of the cut facet", "0xB6907D091130B62fe67D65bA322a75ef27668bfC")
   .addOptionalParam("diamondInit", "The standard address of the init facet", "0x79B6775d20feF47F8613434f350399B8cC8f7709")
   .addOptionalParam("diamondLoupeFacet", "The standard address of the init facet", "0x710A769bbE329Fa239D02B8dF5c964B1e8C27111")
@@ -60,14 +57,9 @@ task("diamond:deploy", "Deploy a new diamond")
     console.log(`Deploying Diamond...`)
     let contractsToVerify = []
 
-    let diamondJson
-    if (args.new) {
-      diamondJson = {
-        functionSelectors: {},
-        contracts: {},
-      }
-    } else {
-      diamondJson = await getDiamondJson(args.o)
+    let diamondJson = {
+      functionSelectors: {},
+      contracts: {},
     }
 
     const accounts = await ethers.getSigners()
@@ -75,22 +67,18 @@ task("diamond:deploy", "Deploy a new diamond")
 
     // deploy DiamondCutFacet
     let diamondCutFacetAddress
-    if (args.new) {
-      if (args.diamondCutFacet === '') {
-        const DiamondCutFacet = await ethers.getContractFactory('DiamondCutFacet')
-        const diamondCutFacet = await DiamondCutFacet.deploy()
-        diamondCutFacetAddress = diamondCutFacet.address
-        await diamondCutFacet.deployed()
+    if (args.diamondCutFacet === '') {
+      const DiamondCutFacet = await ethers.getContractFactory('DiamondCutFacet')
+      const diamondCutFacet = await DiamondCutFacet.deploy()
+      diamondCutFacetAddress = diamondCutFacet.address
+      await diamondCutFacet.deployed()
 
-        contractsToVerify.push({
-          name: 'DiamondCutFacet',
-          address: diamondCutFacetAddress
-        })
-      } else {
-        diamondCutFacetAddress = args.diamondCutFacet
-      }
+      contractsToVerify.push({
+        name: 'DiamondCutFacet',
+        address: diamondCutFacetAddress
+      })
     } else {
-      diamondCutFacetAddress = diamondJson.contracts.DiamondCutFacet.address
+      diamondCutFacetAddress = args.diamondCutFacet
     }
 
     // deploy Diamond
@@ -105,27 +93,23 @@ task("diamond:deploy", "Deploy a new diamond")
     
     let diamondInit
     let diamondInitAddress = ''
-    if (args.new) {
-      if (args.diamondInit === '') {
-        const DiamondInit = await ethers.getContractFactory('DiamondInit')
-        diamondInit = await DiamondInit.deploy()
-        await diamondInit.deployed()
-  
-        diamondJson.contracts.DiamondInit = {
-          "name": "DiamondInit",
-          "address": diamondInit.address,
-          "type": "remote"
-        }
-        contractsToVerify.push({
-          name: 'DiamondInit',
-          address: diamondInit.address
-        })
-        diamondInitAddress = diamondInit.address
-      } else {
-        diamondInitAddress = args.diamondInit
+    if (args.diamondInit === '') {
+      const DiamondInit = await ethers.getContractFactory('DiamondInit')
+      diamondInit = await DiamondInit.deploy()
+      await diamondInit.deployed()
+
+      diamondJson.contracts.DiamondInit = {
+        "name": "DiamondInit",
+        "address": diamondInit.address,
+        "type": "remote"
       }
+      contractsToVerify.push({
+        name: 'DiamondInit',
+        address: diamondInit.address
+      })
+      diamondInitAddress = diamondInit.address
     } else {
-      diamondInitAddress = diamondJson.contracts.DiamondInit.address
+      diamondInitAddress = args.diamondInit
     }
 
     diamondJson.type = 'remote'
@@ -136,43 +120,35 @@ task("diamond:deploy", "Deploy a new diamond")
 
 
     let diamondLoupeFacetAddress
-    if (args.new) {
-      if (args.diamondLoupeFacet === '') {
-        const DiamondLoupeFacet = await ethers.getContractFactory('DiamondLoupeFacet')
-        const diamondLoupeFacet = await DiamondLoupeFacet.deploy()
-        diamondLoupeFacetAddress = diamondLoupeFacet.address
-        await diamondLoupeFacet.deployed()
-    
-        contractsToVerify.push({
-          name: 'DiamondLoupeFacet',
-          address: diamondLoupeFacetAddress
-        })
-      } else {
-        diamondLoupeFacetAddress = args.diamondLoupeFacet
-      }
+    if (args.diamondLoupeFacet === '') {
+      const DiamondLoupeFacet = await ethers.getContractFactory('DiamondLoupeFacet')
+      const diamondLoupeFacet = await DiamondLoupeFacet.deploy()
+      diamondLoupeFacetAddress = diamondLoupeFacet.address
+      await diamondLoupeFacet.deployed()
+  
+      contractsToVerify.push({
+        name: 'DiamondLoupeFacet',
+        address: diamondLoupeFacetAddress
+      })
     } else {
-      diamondLoupeFacetAddress = diamondJson.contracts.DiamondLoupeFacet.address
+      diamondLoupeFacetAddress = args.diamondLoupeFacet
     }
 
     let ownershipFacetAddress
-    if (args.new) {
-      if (args.ownershipFacet === '') {
-        const OwnershipFacet = await ethers.getContractFactory('OwnershipFacet')
-        const ownershipFacet = await OwnershipFacet.deploy()
-        ownershipFacetAddress = ownershipFacet.address
-        await ownershipFacet.deployed()
-    
-        contractsToVerify.push({
-          name: 'OwnershipFacet',
-          address: ownershipFacetAddress
-        })
-      } else {
-        ownershipFacetAddress = args.ownershipFacet
-      }
+    if (args.ownershipFacet === '') {
+      const OwnershipFacet = await ethers.getContractFactory('OwnershipFacet')
+      const ownershipFacet = await OwnershipFacet.deploy()
+      ownershipFacetAddress = ownershipFacet.address
+      await ownershipFacet.deployed()
+  
+      contractsToVerify.push({
+        name: 'OwnershipFacet',
+        address: ownershipFacetAddress
+      })
     } else {
-      ownershipFacetAddress = diamondJson.contracts.OwnershipFacet.address
+      ownershipFacetAddress = args.ownershipFacet
     }
-
+    
     const res = await verify(contractsToVerify)
     
     console.log('[OK] Diamond verified')
@@ -191,69 +167,49 @@ task("diamond:deploy", "Deploy a new diamond")
 
 
     const cut = []
-    if (!args.excludeLoupe) {
-      console.log('Adding Loupe Facet...')
-      const facet = await ethers.getContractAt('DiamondLoupeFacet', diamondLoupeFacetAddress)
-      cut.push({
-        facetAddress: facet.address,
-        action: FacetCutAction.Add,
-        functionSelectors: getSelectors(facet)
-      })
-      await hre.run('diamond:add', {
-        o: args.o,
-        remote: true,
-        address: diamondLoupeFacetAddress
-      })
-    }
-    if (!args.excludeOwnership) {
-      console.log('Adding Ownership Facet...')
-      const facet = await ethers.getContractAt('OwnershipFacet', ownershipFacetAddress)
-      cut.push({
-        facetAddress: facet.address,
-        action: FacetCutAction.Add,
-        functionSelectors: getSelectors(facet)
-      })
-      await hre.run('diamond:add', {
-        o: args.o,
-        remote: true,
-        address: ownershipFacetAddress
-      })
-    }
+    console.log('Adding Loupe Facet...')
+    const diamondLoupeFacetContract = await ethers.getContractAt('DiamondLoupeFacet', diamondLoupeFacetAddress)
+    cut.push({
+      facetAddress: diamondLoupeFacetContract.address,
+      action: FacetCutAction.Add,
+      functionSelectors: getSelectors(diamondLoupeFacetContract)
+    })
+    await hre.run('diamond:add', {
+      o: args.o,
+      remote: true,
+      address: diamondLoupeFacetAddress
+    })
 
-    if (!args.excludeLoupe || !args.excludeOwnership) {
-      const diamondCut = await ethers.getContractAt('IDiamondCut', diamond.address)
-      let tx
-      let receipt
-      // call to init function
-      //let functionCall = diamondInit.interface.encodeFunctionData('init')
-      tx = await diamondCut.diamondCut(cut, diamondInitAddress, '0xe1c7392a')
-      receipt = await tx.wait()
-      if (!receipt.status) {
-        throw Error(`[ERR] Diamond upgrade failed: ${tx.hash}`)
-      }
-      console.log(`[OK] Diamond cut complete`)  
+    console.log('Adding Ownership Facet...')
+    const ownershipFacetContract = await ethers.getContractAt('OwnershipFacet', ownershipFacetAddress)
+    cut.push({
+      facetAddress: ownershipFacetContract.address,
+      action: FacetCutAction.Add,
+      functionSelectors: getSelectors(ownershipFacetContract)
+    })
+    await hre.run('diamond:add', {
+      o: args.o,
+      remote: true,
+      address: ownershipFacetAddress
+    })
+
+    const diamondCut = await ethers.getContractAt('IDiamondCut', diamond.address)
+    let tx
+    let receipt
+    // call to init function
+    //let functionCall = diamondInit.interface.encodeFunctionData('init')
+    tx = await diamondCut.diamondCut(cut, diamondInitAddress, '0xe1c7392a')
+    receipt = await tx.wait()
+    if (!receipt.status) {
+      throw Error(`[ERR] Diamond upgrade failed: ${tx.hash}`)
     }
+    console.log(`[OK] Diamond cut complete`)
 
     await hre.run('diamond:cut', {
       o: args.o
     })
 
   })
-
-task("diamond:clone", "Do stuff with diamonds")
-  .addParam("address", "The diamond's address")
-  .addOptionalParam("o", "The file to create", "diamond.json")
-  .setAction(async (args, hre) => {
-    const CHAIN_ID = getChainIdByNetworkName(hre.config.defaultNetwork)
-    let output = await loupe(args.address, CHAIN_ID)
-
-    if (args.o) {
-      let filename = args.o
-      await promises.writeFile('./' + filename, JSON.stringify(output, null, 2));
-    } else {
-      console.log(output)
-    }
-  });
 
 task("diamond:status", "Compare the local diamond.json with the remote diamond")
   .addOptionalParam("address", "The diamond's address", "")
@@ -395,7 +351,7 @@ async function deployAndVerifyFacetsFromDiff(facetsToDeployAndVerify, CHAIN_ID) 
     console.log(`[OK] Facet '${contract.name}' deployed with address ${facet.address}`)
   }
 
-  console.log('Starting verification process on Sourcify...')
+  console.log('Starting verification process...')
   
   const res = await verify(contracts)
   console.log('[OK] Deployed facets verified')
