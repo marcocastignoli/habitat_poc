@@ -11,7 +11,7 @@
     "hardhat": "^2.8.2"
   },
   "scripts": {
-    "dev:start": "ganache -d  --db ./data/ganache --miner.blockGasLimit 0x1fffffffffffff --miner.defaultTransactionGasLimit 999999999999999 --miner.callGasLimit 999999999999999 --chain.networkId 1337",
+    "dev:start": "npx hardhat node",
     "test": "npx hardhat test"
   },
   "dependencies": {

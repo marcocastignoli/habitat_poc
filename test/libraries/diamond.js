@@ -104,17 +104,20 @@ async function updateDiamond(TEST_FILE, CHAIN_ID) {
 }
 
 async function testEnvironmentIsReady() {
-  let ganacheIsReady = false
+  let nodeIsReady = false
 
-  while(!ganacheIsReady) {
-    if (!ganacheIsReady) {
+  while(!nodeIsReady) {
+    if (!nodeIsReady) {
       try {
-        console.log('Waiting for ganache to be active...')
-        await axios.get('http://localhost:8545')
-      } catch(e) {
-        if (e.code != "ECONNREFUSED" && e.response.status === 404) {
-          ganacheIsReady = true
+        console.log('Waiting for local node to be active...')
+        let res = await axios.get('http://127.0.0.1:8545/')
+        if (res.status === 200) {
+          nodeIsReady = true
+        } else {
+          console.log('Activate the local node by running yarn dev:start')
         }
+      } catch(e) {
+        console.log('Activate the local node by running yarn dev:start')
       }
     }
     await new Promise(r => setTimeout(r, 1000));

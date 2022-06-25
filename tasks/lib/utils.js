@@ -10,6 +10,7 @@ let utils = {
     switch(networkName) {
       case 'localhost': return 1337
       case 'rinkeby': return 4
+      case 'hardhat': return 1337
       default: throw 'Add chainId in utils.js'
     }
   },
@@ -177,12 +178,9 @@ let utils = {
     return names
   },
   async getMetadataFromAddress(address) {
-    const url = "http://localhost:8545";
-    const provider = new ethers.providers.JsonRpcProvider(url);
-
     const fromHexString = hexString => new Uint8Array(hexString.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
 
-    const bytecode = await provider.getCode(address);
+    const bytecode = await ethers.provider.getCode(address);
     const ipfsHashLength =  parseInt(`${bytecode.substr(bytecode.length - 4)}`, 16);
     const cborEncoded = bytecode.substring(bytecode.length - 4 - ipfsHashLength*2, bytecode.length - 4)
     const contractMetadata = cborDecode(fromHexString(cborEncoded))

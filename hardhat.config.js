@@ -29,9 +29,12 @@ module.exports = {
   networks: {
     localhost: {
       url: "http://localhost:8545",
-      /*      
-        uses account 0 of the hardhat node to deploy
-      */
+    },
+    hardhat: {
+      forking: {
+        url: process.env.ALCHEMY_RINKEBY_URL,
+      },
+      timeout: 100000
     },
   },
   mocha: {
